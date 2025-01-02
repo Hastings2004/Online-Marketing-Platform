@@ -88,12 +88,27 @@ class Orders extends Database{
         echo "error in execution";
         exit();
     }
-    $stmt = $this->connect() -> prepare("SELECT * FROM products WHERE merchant_id = ?");
+    $stmt = $this->connect() -> prepare("SELECT * FROM products WHERE product_id = ?");
+    if(!$stmt->execute(array($cart_items[0]['product_id']))) {
+        $stmt = null;
+        echo "error in executing stmt";
+        exit();
+    }
+
+    $merchant = $stmt ->fetchAll(PDO::FETCH_ASSOC);
     
+    $stmt = $this->connect() -> prepare("SELECT * FROM merchants WHERE merchant_id = ?");
+    if(!$stmt->execute(array($merchant[0]['merchant_id']))) {
+        $stmt = null;
+        echo "error in executing stmt";
+        exit();
+    }
+
+    $users = $stmt ->fetchAll(PDO::FETCH_ASSOC);
     
     $message = "You have new order from ".$_SESSION['first_name']."";
     $stmt = $this -> connect() -> prepare("INSERT INTO notifications (user_id,message_created, is_read) VALUES (?, ?,?)");
-    if(!$stmt -> execute(array(3, $message, 0))){
+    if(!$stmt -> execute(array($users[0]['user_id'], $message, 0))){
         $stmt = null;
         echo "error";
         exit();
@@ -156,7 +171,7 @@ class Orders extends Database{
 
         $customer = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $stmt = $this -> connect() -> prepare("SELECT * FROM orders INNER JOIN order_items ON orders.order_id = order_items.order_id INNER JOIN products ON products.product_id = order_items.product_id WHERE customer_id =?");
+        $stmt = $this -> connect() -> prepare("SELECT * FROM orders INNER JOIN order_items ON orders.order_id = order_items.order_id INNER JOIN products ON products.product_id = order_items.product_id WHERE customer_id =? ORDER BY created_at DESC LIMIT 1");
 
         if(!$stmt->execute(array($customer[0]['customer_id']))){
             $stmt = null;
@@ -174,12 +189,89 @@ class Orders extends Database{
         echo "<div class='table-data'>
 				<div class='order'>  						 
 					<div class='head'>
-						<h3>Order present</h3>
+						<h3>Recent Orders</h3>
 						<i class='bx bx-search'></i>
 						<i class='bx bx-filter'></i>
 					</div>
                     <div>
-                        <table>
+                        <table border=1>
+                            <tr>
+                                <td>Order ID</td>
+                                <td>Order status</td>
+                                <td>Order date</td>
+                                <td>Product name</td>
+                                <td>Quantity</td>
+                                <td>Price </td>
+                                <td>Total amount</td>
+                                <td>Product image</td>
+                            </tr>
+
+                    ";
+        foreach($data as $row){
+            echo "
+                    
+                            <tr>
+                                <td>".$row['order_id']."</td>
+                                <td>".$row['order_status']."</td>
+                                <td>".$row['created_at']."</td>
+                                <td>".$row['product_name']."</td>
+                                <td>".$row['quantity']."</td>
+                                <td>".$row['product_price']."</td>
+                                <td>".$row['total_price']."</td>
+                                <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
+                            </tr>
+      
+                            ";
+                          
+
+
+        }
+        echo "  
+        </table>
+        </div>
+        </div>
+        </div>"; 
+    }
+    public function get_all_browsed_orders($user_id){
+        $stmt = $this -> connect() ->prepare("SELECT * FROM customers WHERE user_id = ?");
+        if(!$stmt->execute(array($user_id))){
+            $stmt = null;
+            echo"error in execute statement";
+            exit();
+        }
+
+        if($stmt -> rowCount() == 0){
+            echo "<p style='background-color: red; color:white; boarder-radius:10px; padding:10px;'>Customer ID not found!!</p>";
+            exit();
+       
+        }
+
+        $customer = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt = $this -> connect() -> prepare("SELECT * FROM orders INNER JOIN order_items ON orders.order_id = order_items.order_id INNER JOIN products ON products.product_id = order_items.product_id WHERE customer_id =? ORDER BY created_at DESC LIMIT 10");
+
+        if(!$stmt->execute(array($customer[0]['customer_id']))){
+            $stmt = null;
+            echo "ERROR in execution";
+            exit();
+        }
+
+        if($stmt->rowCount() == 0){
+            echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px;'>Customer you dont have any order!! <a href='home.php'>make order</a></p>";
+          
+            exit();
+        }
+        $data = $stmt ->fetchAll(PDO::FETCH_ASSOC);
+
+        echo "<div class='table-data'>
+				<div class='order'>  						 
+					<div class='head'>
+						<h3>Recent Orders</h3>
+						<i class='bx bx-search'></i>
+						<i class='bx bx-filter'></i>
+					</div>
+                    <div>
+                        <table border=1>
                             <tr>
                                 <td>Order ID</td>
                                 <td>Order status</td>
