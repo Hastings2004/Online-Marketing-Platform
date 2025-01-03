@@ -544,12 +544,12 @@ body {
 	grid-gap: 12px;
 	padding-left: 6px;
 }
-#content main .table-data .order table td img {
+/*#content main .table-data .order table td img {
 	width: 36px;
 	height: 36px;
 	border-radius: 50%;
 	object-fit: cover;
-}
+}*/
 #content main .table-data .order table tbody tr:hover {
 	background: var(--grey);
 }
