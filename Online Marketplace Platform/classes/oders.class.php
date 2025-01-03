@@ -59,12 +59,7 @@ class Orders extends Database{
         //echo "<p style='background-color: green; color:white; boarder-radius:10px; padding:10px;'> Order successfully placed</p>";
         
         $last_order_id = $this-> connect() -> lastInsertId();
-        /*if(!$stmt->execute(array($customer[0]['customer_id']))) {
-            $stmt = null;
-            echo "error in execution";
-            exit();
-        }
-       $last_order_id = 1;*/
+       
 
        foreach ($cart_items as $item) {
             $product_id = $item['product_id'];
@@ -155,7 +150,7 @@ class Orders extends Database{
     
     }
     // this function is used to get order details to a customer
-    public function get_browser_order($user_id){
+    public function get_customer_orders($user_id){
         $stmt = $this -> connect() ->prepare("SELECT * FROM customers WHERE user_id = ?");
         if(!$stmt->execute(array($user_id))){
             $stmt = null;
@@ -180,7 +175,7 @@ class Orders extends Database{
         }
 
         if($stmt->rowCount() == 0){
-            echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px;'>Customer you dont have any order!! <a href='home.php'>make order</a></p>";
+            echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px;'>Customer you dont have any order!! make order</p>";
           
             exit();
         }
@@ -219,6 +214,11 @@ class Orders extends Database{
                                 <td>".$row['product_price']."</td>
                                 <td>".$row['total_price']."</td>
                                 <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
+                                <td> 
+                                    <form action='order.php' method='post'>
+                                        <button type='submit' name='cancel' style='background-color:green; color:while; width: 50px;'>Cancel</button>
+                                    </form>
+                                </td>
                             </tr>
       
                             ";
@@ -319,7 +319,7 @@ class Orders extends Database{
         }
         if($stmt->rowCount() == 0){
             echo "<p style='background-color: red; color:white; boarder-radius:10px; padding:10px;'>
-            You dont have any order  </p>";            
+            Merchant ID not found  </p>";            
             exit();
 
         }
@@ -338,7 +338,7 @@ class Orders extends Database{
             exit();
         }
         if($stmt->rowCount() == 0){
-            echo "<p style='background-color: green; color:white; boarder-radius:10px; padding:10px; margin-top: 20px; border-radius: 10px;'>
+            echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px; margin-top: 20px; border-radius: 10px;'>
             You dont have  any order placed</p>";            
             exit();
 
@@ -353,7 +353,7 @@ class Orders extends Database{
 						<i class='bx bx-filter'></i>
 					</div>
                     <div>
-                        <table>
+                        <table border=1>
                             <tr>
                                 <td>first name</td>
                                 <td>last name</td>
@@ -386,8 +386,13 @@ class Orders extends Database{
                                 <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
                                 <td>".$row['total_price']."</td>
                                 <td>".$row['total_amount']."</td>
+                                 <td> 
+                                    <form action='order.php' method='post'>
+                                        <button type='submit' name='approve' style='background-color:green; color:while; width: 50px;'>Approve</button>
+                                    </form>
+                                </td>
                             </tr>
-                            <hr>
+                            
       
                                 ";
        }
@@ -400,8 +405,6 @@ class Orders extends Database{
     }
 
     public function view(){
-       
-       
 
         $stmt = $this -> connect() -> prepare("SELECT * FROM orders INNER JOIN order_items ON orders.order_id = order_items.order_id 
         INNER JOIN products ON products.product_id = order_items.product_id");
@@ -474,7 +477,7 @@ class Orders extends Database{
         }
         $merchant = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
-        $stmt = $this -> connect() -> prepare("SELECT AVG(total_price) AS total FROM order_items INNER JOIN products ON order_items.product_id = products.product_id WHERE merchant_id = ?");
+        $stmt = $this -> connect() -> prepare("SELECT SUM(total_price) AS total FROM order_items INNER JOIN products ON order_items.product_id = products.product_id WHERE merchant_id = ?");
        
         if(!$stmt->execute(array($merchant[0]['merchant_id']))){
             $stmt = null;
@@ -487,7 +490,88 @@ class Orders extends Database{
         echo $total;
     }
 
+    public function cancel_order($user_id){
+        $stmt = $this -> connect() -> prepare("SELECT * FROM customers WHERE user_id = ?");
+        if(!$stmt->execute(array($user_id))){
+            $stmt = null;
+            echo "error during processing";
+            exit();
+        }
+        $customer = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        $stmt = $this -> connect() -> prepare("SELECT * FROM orders WHERE customer_id = ?");
+        if(!$stmt->execute(array($customer[0]["customer_id"]))){
+            $stmt = null;
+            echo "error during processing";
+            exit();
+        }
+        $orders = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt = $this -> connect() -> prepare("DELETE FROM orders WHERE customer_id = ? AND order_id = ? ORDER BY created_at DESC LIMIT 1");
+
+        if(!$stmt->execute(array($orders[0]["customer_id"], $orders[0]['order_id']))){
+            $stmt = null;
+            echo 'error during processing';
+            exit();
+        }
+
+        $stmt = $this -> connect() -> prepare('SELECT * FROM order_items WHERE order_id = ? ORDER BY order_item_id DESC');
+        if(!$stmt->execute(array($orders[0]['order_id']))){
+            $stmt = null;
+            echo 'Error during processing';
+            exit();
+
+        }
+        $order_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach($order_items as $order_item){
+            $order_id = $order_item['order_id'];
+            $order_item_id = $order_item['order_item_id'];
+
+            $stmt = $this -> connect() -> prepare('DELETE FROM order_items WHERE order_item_id = ? AND order_id = ?');
+            if(!$stmt->execute(array($order_item_id, $order_id))){
+                $stmt = null;
+                echo 'error during deleting iterms';
+                exit();
+            }
+        }
+        $stmt = $this->connect() -> prepare("SELECT * FROM products WHERE product_id = ?");
+        if(!$stmt->execute(array($order_items[0]['product_id']))) {
+            $stmt = null;
+            echo "error in executing stmt";
+            exit();
+        }
+
+        $merchant = $stmt ->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = $this->connect() -> prepare("SELECT * FROM merchants WHERE merchant_id = ?");
+        if(!$stmt->execute(array($merchant[0]['merchant_id']))) {
+            $stmt = null;
+            echo "error in executing stmt";
+            exit();
+        }
+         $stmt = $this->connect() -> prepare("SELECT * FROM merchants WHERE merchant_id = ?");
+        if(!$stmt->execute(array($merchant[0]['merchant_id']))) {
+            $stmt = null;
+            echo "error in executing stmt";
+            exit();
+        }
+
+        $users = $stmt ->fetchAll(PDO::FETCH_ASSOC);
+        
+        $message = $_SESSION['first_name']." has cancel the transaction";
+        $stmt = $this -> connect() -> prepare("INSERT INTO notifications (user_id,message_created, is_read) VALUES (?, ?,?)");
+        if(!$stmt -> execute(array($users[0]['user_id'], $message, 0))){
+            $stmt = null;
+            echo "error";
+            exit();
+        }
+         echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px; margin-top: 20px; border-radius: 10px;'>
+            Your order has been canceled</p>";
+
+
+
+    }
     
 
 }
