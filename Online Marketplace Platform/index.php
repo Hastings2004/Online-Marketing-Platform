@@ -37,7 +37,7 @@
                     </div>
                     <div class="forget">
                        
-                        <p> <input type="checkbox" name="checkbox"> Remember me <span><a href="">Forget Password?</a></span></p>
+                        <p> <input type="checkbox" name="checkbox"> Remember me <span><a href="includes/forget.php">Forget Password?</a></span></p>
                     </div>
                     <div class="form-details">
                         <button type="submit" name="login">Login</button>
