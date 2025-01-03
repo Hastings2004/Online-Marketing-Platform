@@ -182,11 +182,11 @@
 							
 								<tr>
 									<td><span class="text">Product Name</span></td>
-									<td> <input type="text" name="product-name" id="product-name" class="input" ></td>
+									<td> <input type="text" name="product-name" id="product-name" class="input" required></td>
 								</tr>
 								<tr>
 									<td><span class="text">Product Description</span></td>
-									<td> <input type="text" name="description" class="input"></td>
+									<td> <input type="text" name="description" class="input" required></td>
 								</tr>
 								<tr>
 									<td><span>Category</span> </td>
@@ -201,11 +201,11 @@
 								</tr>
 								<tr>
 									<td><span>Price</span></td>
-									<td> <input type="number" class="input" name="product-price"></td>
+									<td> <input type="number" class="input" name="product-price" required></td>
 								</tr>
 								<tr>
 									<td><span>Image URL</span></td>
-									<td><input type="file" id="Image" name="file" ></td>
+									<td><input type="file" id="Image" name="file" required></td>
 								</tr>
 
 								<tr>
@@ -259,19 +259,19 @@
 						<i class='bx bx-filter' ></i>
 					</div>
 					<div>
-						<form action="product-merch.php" method="post">
+						<form action="../uploads/uploads.php" method="post" enctype="multipart/form-data">
 							<table>
 								<tr>
 									<td><span class="text">Product Name</span></td>
-									<td><input type="text" name="product-name" id="product-name" class="input" ></td>
+									<td><input type="text" name="product-name" id="product-name" class="input" required ></td>
 								</tr>
 								<tr>
 									<td><span class="text">Product Description</span></td>
-									<td><input type="text" name="description" class="input" ></td>
+									<td><input type="text" name="description" class="input" required></td>
 								</tr>
 								<tr>
 									<td><span>Price</span> </td>
-									<td><input type="number" class="input" name="product-price"></td>
+									<td><input type="number" class="input" name="product-price" required></td>
 								</tr>
 								<tr>
 									<td><span>Category</span>  </td>
@@ -286,7 +286,7 @@
 								</tr>
 								<tr>
 									<td><span>Image URL</span> </td>
-									<td><input type="file" id="Image" name="file" > </td>
+									<td><input type="file" id="Image" name="file" required> </td>
 								</tr>
 								<tr>
 									<td></td>
@@ -294,20 +294,7 @@
 								</tr>
 							</table>
 						</form>
-						<?php
-							if(isset($_POST['update'])){
-								$product_name = $_POST['product-name'];
-								$product_price = $_POST['product-price'];
-								$description = $_POST['description'];
-								$category = $_POST['category'];
-								
-						
-								
-								$product = new Products();
-
-								$product -> update_product($product_name,$description, $product_price,$category);
-							}
-						?>
+					
 					</div>
 				
 				
