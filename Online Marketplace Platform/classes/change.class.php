@@ -45,4 +45,35 @@ class Change extends Database{
         }
        
     }
+    protected function resert_password($email, $username,  $new_password){
+        $stmt = $this->connect()->prepare("SELECT * FROM users WHERE user_email = ? AND username = ?");
+
+        if(!$stmt ->execute(array($email, $username))){
+            $stmt = null;
+            echo"error occur during reseting password";
+            exit();
+        }
+       
+        if($stmt -> rowCount() == 0){
+            $stmt = null;
+            echo "<p style='background-color: red; color:white; border-radius:10px; padding:10px;'>Invalid Credentials!! please try again</p>";
+        
+            exit();
+        }
+        $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt =  $this->connect()->prepare("UPDATE users SET user_password = ? WHERE user_email = ? AND username = ?");
+        $hash = password_hash($new_password, PASSWORD_DEFAULT);
+        if(!$stmt -> execute(array($hash, $email, $username))){
+            $stmt = null;
+            echo"error occur during reseting password";
+            exit();
+        }
+       
+        echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px;'>  password successfully reserted!! <a href='../inde.ph'>Click here to login</a></p>";
+        
+           
+        
+       
+    }
 }
