@@ -30,7 +30,7 @@ session_start();
 				</a>
 			</li>
             <li>
-				<a href="../merchant/profile-merchant.php">
+				<a href="../merchant/profile.php">
 					<i class='bx bxs-group' ></i>
 					<span class="text">Profile</span>
 				</a>
@@ -137,14 +137,12 @@ session_start();
                 include "../database/database.php";
                 include "../classes/products.class.php";
 
-
-                    if(isset($_POST['add-product'])){
-                        $product_name = $_POST['product-name'];
+				if(isset($_POST['update'])){
+					$product_name = $_POST['product-name'];
                         $product_price = $_POST['product-price'];
                         $description = $_POST['description'];
                         $category = $_POST['category'];
-                        $img_url = $_FILES['file'];
-
+					
                         $file = $_FILES['file'];
                         $file_name = $_FILES['file']['name'];
                         $file_tmp = $_FILES['file']['tmp_name'];
@@ -165,13 +163,71 @@ session_start();
 
                                     $fileFolder = 'upload/'. $fileNewName;
                                     move_uploaded_file($file_tmp, $fileFolder);
-                                    
                                     $product = new Products();
+						
 
-                                    $product -> add_product($product_name, $description, $category,$fileNewName,$product_price);
-                                    echo "<p style='background-color: green; color:white; padding-left:30px; padding:10px; border-radius: 10px;'>
+									$product -> update_product($product_name,$description,$product_price,$category,$fileNewName);
+									echo "<p style='background-color: green; color:white; padding-left:30px; padding:10px; border-radius: 10px;'>
+                                                        Product updated successfully</p>";
+								                 
+                                }
+                                    else{
+                                        echo "<p style='background-color: red; color:white; padding-left:30px; padding:10px; border-radius: 10px;'>
+                                                                file is too large try again</p>";
+                                                                exit();
+                                                            
+                                    }
+                                }
+                                else{
+                                    echo "<p style='background-color: red; color:white; padding-left:30px; padding:10px; border-radius: 10px;'>
+                                    An error occur during upload</p>";
+                                    exit();
+                                }
+                            }
+                        else{
+                            echo "<p style='background-color: red; color:white; padding-left:30px; padding:10px; border-radius: 10px;'>
+                                                Invalid file format</p>";
+                                                exit();
+                            }
+
+                        
+
+				}
+
+
+                    if(isset($_POST['add-product'])){
+                        $product_name = $_POST['product-name'];
+                        $product_price = $_POST['product-price'];
+                        $description = $_POST['description'];
+                        $category = $_POST['category'];
+					
+                        $file = $_FILES['file'];
+                        $file_name = $_FILES['file']['name'];
+                        $file_tmp = $_FILES['file']['tmp_name'];
+                        $file_type = $_FILES['file']['type'];
+                        $file_size = $_FILES['file']['size'];
+                        $file_error = $_FILES['file']['error'];
+
+                        $file_ex = explode(".",$file_name);
+                        $fileActualEx = strtolower(end($file_ex));
+
+                        $allowed = array('jpg','jpeg', 'png','pdf');
+
+                        if(in_array($fileActualEx, $allowed)){
+                            if($file_error === 0){
+                            // if(file_exists($file_tmp)) 
+                                if($file_size < 10000000){
+                                    $fileNewName = $product_name. ".".$fileActualEx;
+
+                                    $fileFolder = 'upload/'. $fileNewName;
+                                    move_uploaded_file($file_tmp, $fileFolder);
+                                    $product = new Products();
+						
+
+									$product -> add_product($product_name, $description, $category,$fileNewName,$product_price);
+									echo "<p style='background-color: green; color:white; padding-left:30px; padding:10px; border-radius: 10px;'>
                                                         Product added successfully</p>";
-                                                        
+								                 
                                 }
                                     else{
                                         echo "<p style='background-color: red; color:white; padding-left:30px; padding:10px; border-radius: 10px;'>
@@ -220,4 +276,4 @@ session_start();
 
 
 
-                       
+                       								echo "<p style='background-color: green; color:white; padding-left:30px; padding:10px; border-radius: 10px;'>
