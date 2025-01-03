@@ -7,6 +7,7 @@ class Update extends Change{
     private $cPass;
     private $user_id;
 
+
     public function __construct($user_id,$email, $oldpass, $newPass, $cPass)
     {
         $this -> email = $email;
@@ -28,7 +29,7 @@ class Update extends Change{
             exit();
         }
         if($this -> validateCpassword($this->newPass,$this->cPass) == false){
-            echo "<p style='background-color: red; color:white; border-radius:10px; padding:10px;'> Password does not match</p>";
+            echo "<p style='background-color: red; color:white; border-radius:10px; padding:10px;'> Confirm password does not match</p>";
         
            
             exit();
@@ -37,6 +38,25 @@ class Update extends Change{
          $this -> update_password($this ->user_id,$this-> email, $this -> oldpass, $this -> newPass);
        
           
+    }
+    public function reset_password(){
+         if($this -> validatePassword($this->newPass) == false){
+            echo "<p style='background-color: red; color:white; border-radius:10px; padding:10px;'>Please enter a strong password with letters and numbers</p>";
+           
+            exit();
+        }
+        if($this -> validatePasswordLength($this ->newPass) == false){
+            echo "<p style='background-color: red; color:white; border-radius:10px; padding:10px;'>Password should have atleast six characters</p>";
+           
+            exit();
+        }
+        if($this -> validateCpassword($this->newPass,$this->cPass) == false){
+            echo "<p style='background-color: red; color:white; border-radius:10px; padding:10px;'> Password does not match</p>";
+        
+           
+            exit();
+        }
+        $this -> resert_password($this -> email,$this-> user_id, $this -> newPass);
     }
    
    
