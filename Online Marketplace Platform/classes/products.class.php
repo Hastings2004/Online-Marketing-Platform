@@ -51,7 +51,7 @@ class Products extends Database{
        
     }
 
-    public function update_product($product_name, $description, $price, $category){
+    public function update_product($product_name, $description, $price, $category, $image_url){
         $stmt = $this->connect()->prepare("SELECT * FROM products WHERE 
          product_name = ? OR product_description = ?");
 
@@ -82,14 +82,14 @@ class Products extends Database{
 
         $merchant = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
-        $stmt = $this->connect()->prepare("UPDATE products SET product_name = ?, product_description = ?, product_price = ?, category = ? 
+        $stmt = $this->connect()->prepare("UPDATE products SET product_name = ?, product_description = ?, product_price = ?, category = ?, image_url = ? 
         WHERE  merchant_id = ?");
-         if(!$stmt -> execute(array($product_name, $description, $price, $category, $merchant[0]['merchant_id']))){
+         if(!$stmt -> execute(array($product_name, $description, $price, $category,$image_url ,$merchant[0]['merchant_id']))){
             $stmt = null;
             echo "error";
             exit();
         }
-        //echo "<p style='background-color: green; color:white; boarder-radius:10px; padding:10px;'>product updated successfully </p>";
+        
        
        
     }
@@ -159,12 +159,13 @@ class Products extends Database{
                     
                     <div>
                     <table border=1>
-                        <tr>
+                        <tr style='font-size: 25px;'>
                             <th>Product Name</th>
                             <th>Image</th>
                             <th>Price</th>
                             <th>Quantity</th>
                         </tr>
+                         <hr>
                        
                     ";
         
@@ -175,13 +176,13 @@ class Products extends Database{
                             
                             <tr>
                                 <td><h3>".$product['product_name']."</h3></td>
-                                <td style='height: 100px; width: 100px'>
-                                    <img src='../uploads/upload/". $product['image_url'] ."' alt='' w>
+                                <td>
+                                    <img src='../uploads/upload/". $product['image_url'] ."' alt='' style='width: 100px;'>
                                     
                                 </td>
 
-                                <td> Price: ".$product['product_price']."</td>
-                                 <td> <input type='number' min='1' name='quantity' required style=' width: 50px;'> 
+                                <td> Price: K".$product['product_price']."</td>
+                                 <td> <input type='number' min='1' name='quantity' required style=' width: 50px; padding: left 7px;'> 
                                 <input type='hidden' name='product_id' value='".$product['product_id']."'> 
                                 <input type='hidden' name='product_price' value='".$product['product_price']."'>
                                 </td>
@@ -193,7 +194,7 @@ class Products extends Database{
                                 
                             </tr>    
                             </form>
-                            <hr>
+                           
                       
                          
                         
@@ -245,7 +246,7 @@ class Products extends Database{
 						<i class='bx bx-filter'></i>
 					</div>
                     <div>
-                        <table>
+                        <table border=1>
                             <tr>
                                 <td>Product name</td>
                                 <td>Description</td>
@@ -266,7 +267,7 @@ class Products extends Database{
                                 <td>".$row['product_price']."</td>
                                 <td>".$row['category']."</td>
                                 <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
-                                <td>
+                                <td style='padding: left 7px;'>
                                     <form action='../merchant/product-merch.php' method='post'>
                                          <input type='hidden' name='product_id' value='".$row['product_id']."'> 
                                         <button type='submit' name='delete' style='background-color:red; color:while; width: 50px;'>Delete</button>
