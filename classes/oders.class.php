@@ -284,7 +284,7 @@ class Orders extends Database{
 
 
         }
-        echo "  
+       /* echo "  
         </table>
         </div>
         </div>
@@ -327,6 +327,7 @@ class Orders extends Database{
 
 ";
 
+*/
         }
     }
     public function get_all_browsed_orders($user_id){
