@@ -113,7 +113,7 @@ include '../classes/oders.class.php';
 				<i class='bx bxs-bell' ></i>
 				<span class="num">
 					<?php
-						
+						echo "hello";
 						$unread = new Notifications();
 						$unread -> get_Uread_notification();
 					
