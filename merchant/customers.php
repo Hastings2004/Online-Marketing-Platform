@@ -95,7 +95,7 @@ include '../classes/users.class.php';
 			<form action="#">
 				<div class="form-input">
 					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' >S</i></button>
+					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
 				</div>
 			</form>
 			<input type="checkbox" id="switch-mode" hidden>
@@ -180,7 +180,11 @@ include '../classes/users.class.php';
 					</span>
 				</li>
 			</ul>
-			<h1>this page is under implementation</h1>
+			<?php
+				$customer = new Users();
+				$customer -> customers();
+			
+			?>
 
 				
 			

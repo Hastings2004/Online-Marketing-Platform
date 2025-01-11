@@ -2,7 +2,7 @@
 
 class Profile extends Database{
 
-    public function update_profile($user_id, $initials, $gender, $nationality, $marita_status, $title, $phone, $national_id, $passport){
+    public function update_profile($user_id, $initials, $gender, $nationality, $district, $village, $marita_status, $title, $phone, $national_id, $passport){
         if($this -> validation($initials, $gender, $nationality, $marita_status, $title) == false){
             echo "<p style='background-color: red; color:white; border-radius:10px; padding:10px;'>
             Please use letters from initials to title</p>";
@@ -22,10 +22,10 @@ class Profile extends Database{
         }
 
         if($stmt -> rowCount() == 0){
-            $stmt = $this -> connect() -> prepare("INSERT INTO user_profile (user_id, initial, gender, nationality, marital_status, title, phone_number, national_id, passport)
-             VALUES (?,?,?,?,?,?,?,?,?)"); //
+            $stmt = $this -> connect() -> prepare("INSERT INTO user_profile (user_id, initial, gender, nationality, district, village ,marital_status, title, phone_number, national_id, passport)
+             VALUES (?,?,?,?,?,?,?,?,?,?,?)"); //
 
-             if(!$stmt-> execute(array($user_id, $initials, $gender, $nationality, $marita_status, $title, $phone, $national_id, $passport))){
+             if(!$stmt-> execute(array($user_id, $initials, $gender, $nationality,$district, $village, $marita_status, $title, $phone, $national_id, $passport))){
                 $stmt = null;
                 echo "error in executing statement";
                 exit();
@@ -40,8 +40,8 @@ class Profile extends Database{
 
 
        $user_details = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-       $stmt = $this -> connect() -> prepare("UPDATE user_profile SET initial=?, gender=?, nationality=?, marital_status = ?, title = ?, phone_number = ?, national_id = ?, passport = ?  WHERE user_id = ?");
-       if(!$stmt -> execute(array($initials, $gender, $nationality, $marita_status, $title, $phone, $national_id, $passport,$user_details[0]['user_id']))){
+       $stmt = $this -> connect() -> prepare("UPDATE user_profile SET initial=?, gender=?, nationality=?, district=?, village=?, marital_status = ?, title = ?, phone_number = ?, national_id = ?, passport = ?  WHERE user_id = ?");
+       if(!$stmt -> execute(array($initials, $gender, $nationality,$district, $village,  $marita_status, $title, $phone, $national_id, $passport,$user_details[0]['user_id']))){
             $stmt = null;
             echo 'error occurred while updating user profile';
             exit();
@@ -109,6 +109,14 @@ class Profile extends Database{
                             <tr>  
                                 <td>Nationality</td>
                                 <td> <input type='text' name='nationality' value=''style='border:none; border-bottom: 3px solid green; padding: 5px;'required> </td>
+                            </tr>
+                            <tr>  
+                                <td>District</td>
+                                <td> <input type='text' name='district' value=''style='border:none; border-bottom: 3px solid green; padding: 5px;'required> </td>
+                            </tr>
+                            <tr>  
+                                <td>Village</td>
+                                <td> <input type='text' name='village' value=''style='border:none; border-bottom: 3px solid green; padding: 5px;'required> </td>
                             </tr>
                             <tr>  
                                 <td>Marital Status</td>
@@ -213,6 +221,14 @@ class Profile extends Database{
                             <tr>  
                                 <td>Nationality</td>
                                 <td> <input type='text' name='nationality' value='".$user_profile[0]['nationality']."'style='border:none; border-bottom: 3px solid green; padding: 5px;'> </td>
+                            </tr>
+                            <tr>  
+                                <td>District</td>
+                                <td> <input type='text' name='district' value='".$user_profile[0]['district']."'style='border:none; border-bottom: 3px solid green; padding: 5px;'> </td>
+                            </tr>
+                            <tr>  
+                                <td>Village</td>
+                                <td> <input type='text' name='village' value='".$user_profile[0]['village']."'style='border:none; border-bottom: 3px solid green; padding: 5px;'> </td>
                             </tr>
                             <tr>  
                                 <td>Marital Status</td>

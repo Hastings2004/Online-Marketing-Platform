@@ -75,3 +75,31 @@ switchMode.addEventListener('change', function () {
 		document.body.classList.remove('dark');
 	}
 })
+
+// implementation of ajax request
+
+let searchField = document.getElementById('search-field');
+let data = document.getElementById('details');
+
+var xhr = new XMLHttpRequest();
+searchField.addEventListener('blur', getData);
+
+function getData() {
+	let name = searchField.value;
+	
+	
+	xhr.open("GET", "../admin/admin-dash.php", true);
+
+	xhr.onload = () =>{
+		if(xhr.status === 200) {
+			displayText(xhr.responseXML);
+		}
+
+	}
+
+	xhr.send();
+}
+function displayText(xmlData) {
+	let documentElement = xmlData.documentElement;
+	data.innerHTML = documentElement.innerHTML;
+}

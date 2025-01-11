@@ -93,7 +93,7 @@ include '../classes/users.class.php';
 		<nav>
 			<i class='bx bx-menu' ></i>
 			<a href="#" class="nav-link">Categories</a>
-			<form action="#">
+			<form action="dash-merch.PHP" method="get">
 				<div class="form-input">
 					<input type="text" placeholder="Search ............." name="search">
 					<button type="submit" class="search-btn" name="search-btn"><i class='bx bx-search' ></i></button>
@@ -200,8 +200,10 @@ include '../classes/users.class.php';
 
 			<div style="color: green;">
 				<?php
-				if(isset($_POST['search-btn'])){
+				if(isset($_GET['search-btn'])){
+					$search = $_GET['search'];
 					$search = new Searching();
+					$search -> search_order($search);
 				}
 				$orders = new Orders();
 				$orders -> get_merchant_orders($_SESSION['user_id']);

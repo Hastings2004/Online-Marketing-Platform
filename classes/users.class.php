@@ -180,6 +180,11 @@ class Users extends Database{
             echo "error occurred while updating customers";
             exit();
         }
+        if($stmt->rowCount() == 0){
+            echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px; margin-top:20px;'>No customer details found</p>";
+            exit();
+       
+        }
 
         $customers = $stmt ->fetchAll(PDO::FETCH_ASSOC);
         echo "<div class='table-data'>
@@ -196,7 +201,12 @@ class Users extends Database{
                                 <td>Last name</td>
                                 <td>Email</td>
                                 <td>User name</td>
-                                <td>Business</td>
+                                <td>Gender</td>
+                                <td>Nationality</td>
+                                <td>District</td>
+                                <td>Village</td>
+                                <td>Phone</td>
+                               
                                 
                             </tr>
 
@@ -210,10 +220,14 @@ class Users extends Database{
                                 <td>".$row['last_name']."</td>
                                 <td>".$row['user_email']."</td>
                                 <td>".$row['username']."</td>
-                                <td>".$row['business_name']." </td>
+                                <td>".$row['gender']." </td>
+                                 <td>".$row['nationality']."</td>
+                                <td>".$row['district']."</td>
+                                <td>".$row['village']." </td>
+                                <td>".$row['phone_number']."</td>
                                 
                             </tr>
-      <hr>
+      
                             ";
                           
 

@@ -96,8 +96,8 @@ include "../classes/oders.class.php";
 			<a href="#" class="nav-link">Categories</a>
 			<form action="#">
 				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+					<input type="text" placeholder="Search..." name="search">
+					<button type="submit" class="search-btn" name="search-btn"><i class='bx bx-search' ></i></button>
 				</div>
 			</form>
 			<input type="checkbox" id="switch-mode" hidden>
@@ -164,6 +164,11 @@ include "../classes/oders.class.php";
               
 			</ul>
 			<?php
+			if(isset($_GET['search-btn'])){
+					$search = $_GET['search'];
+					$search = new Searching();
+					$search -> search_order($search);
+				}
 			if(isset($_POST['approve'])){
 				$order_id = $_POST['order_id'];
 				$orders = new Orders();

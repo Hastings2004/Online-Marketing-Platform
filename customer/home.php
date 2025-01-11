@@ -2,6 +2,8 @@
 session_start();
 include '../database/database.php';
 include '../classes/notification.class.php';
+include '../classes/search.class.php';
+include '../classes/products.class.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,7 +91,7 @@ include '../classes/notification.class.php';
 		<nav>
 			<i class='bx bx-menu' ></i>
 			<a href="#" class="nav-link">Categories</a>
-			<form action="search-cust.php" method="post">
+			<form action="search-cust.php" method="get">
 				<div class="form-input">
 					<input type="text" placeholder="Search products" name="search">
 					<button type="submit" class="search-btn" name="search-btn"><i class='bx bx-search' ></i></button>
@@ -138,8 +140,17 @@ include '../classes/notification.class.php';
 
 			<div>
 				<?php
+				
+			     	if(isset($_GET['search-btn'])){
+						
+						$search = $_GET['search'];
+
+						$result = new Searching();
+						
+						$result -> search_product($search);		  
+					}
 				    
-					 include '../classes/products.class.php';
+					
 				     $products = new Products();
 					 $products -> view_product();
 				

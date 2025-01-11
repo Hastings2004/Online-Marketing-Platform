@@ -325,9 +325,8 @@ class Orders extends Database{
                 </div>
             </div>
 
-";
+";*/
 
-*/
         }
     }
     public function get_all_browsed_orders($user_id){
@@ -444,70 +443,129 @@ class Orders extends Database{
         }
         $data = $stmt ->fetchAll(PDO::FETCH_ASSOC);
 
-        echo "<div class='table-data' style='color:green;'>
-				<div class='order'>  						 
-					<div class='head'>
-						<h3>Order present</h3>
-						<i class='bx bx-search'></i>
-						<i class='bx bx-filter'></i>
-					</div>
-                    <div>
-                       
-                        <table border=1>
-                            <tr>
-                                <td>first name</td>
-                                <td>last name</td>
-                                <td>Email</td>
-                                <td>Order Status</td>
-                                <td>Order Date</td>
-                                <td>Product Name</td>
-                                <td>Quantity</td>
-                                <td>Price</td>
-                                <td>Category</td>
-                                <td>Image</td>
-                                <td>Total Price</td>
-                                <td>Total Amount</td>
-                            </tr>
+        if($data[0]['order_status'] == "completed"){
+            echo "<div class='table-data' style='color:green;'>
+                    <div class='order'>  						 
+                        <div class='head'>
+                            <h3>Order present</h3>
+                            <i class='bx bx-search'></i>
+                            <i class='bx bx-filter'></i>
+                        </div>
+                        <div>
+                        
+                            <table border=1>
+                                <tr>
+                                    <td>first name</td>
+                                    <td>last name</td>
+                                    <td>Email</td>
+                                    <td>Order Status</td>
+                                    <td>Order Date</td>
+                                    <td>Product Name</td>
+                                    <td>Quantity</td>
+                                    <td>Price</td>
+                                    <td>Category</td>
+                                    <td>Image</td>
+                                    <td>Total Price</td>
+                                    <td>Total Amount</td>
+                                </tr>
 
-                    ";
-        foreach($data as $row){
-            echo "
-                    
-                            <tr>
-                                <td>".$row['first_name']."</td>
-                                <td>".$row['last_name']."</td>
-                                <td>".$row['user_email']."</td>
-                                <td><p style='background-color:green; padding:7px; color:white;'>".$row['order_status']."</p></td>
-                                <td>".$row['created_at']."</td>
-                                <td>".$row['product_name']."</td>
-                                <td>".$row['quantity']."</td>
-                                <td>".$row['product_price']."</td>
-                                <td>".$row['category']."</td>
-                                <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
-                                <td>".$row['total_price']."</td>
-                                <td>".$row['total_amount']."</td>
-                                 <td> 
-                                     <form action='../merchant/orders-merch.php' method='post'>
-                                        <input type='hidden' name='order_id' value='".$row["order_id"].">
-                                        <input type='submit' name='approve' value='Approve' />
-                                        <button type='submit' name='approve' style='background-color:green; color:while; width: 50px;'>Approve</button>
+                        ";
+            foreach($data as $row){
+                echo "
+                        
+                                <tr>
+                                    <td>".$row['first_name']."</td>
+                                    <td>".$row['last_name']."</td>
+                                    <td>".$row['user_email']."</td>
+                                    <td><p style='background-color:green; padding:7px; color:white;'>".$row['order_status']."</p></td>
+                                    <td>".$row['created_at']."</td>
+                                    <td>".$row['product_name']."</td>
+                                    <td>".$row['quantity']."</td>
+                                    <td>".$row['product_price']."</td>
+                                    <td>".$row['category']."</td>
+                                    <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
+                                    <td>".$row['total_price']."</td>
+                                    <td>".$row['total_amount']."</td>
+                                    
+                                </tr>
+                                
+        
+                                    ";
+        }
+            echo "  
+        
+            </table>
+            </div>
+            </div>
+            </div>"; 
+
+        }
+        else{
+            echo "<div class='table-data' style='color:green;'>
+                    <div class='order'>  						 
+                        <div class='head'>
+                            <h3>Order present</h3>
+                            <i class='bx bx-search'></i>
+                            <i class='bx bx-filter'></i>
+                        </div>
+                        <div>
+                        
+                            <table border=1>
+                                <tr>
+                                    <td>first name</td>
+                                    <td>last name</td>
+                                    <td>Email</td>
+                                    <td>Order Status</td>
+                                    <td>Order Date</td>
+                                    <td>Product Name</td>
+                                    <td>Quantity</td>
+                                    <td>Price</td>
+                                    <td>Category</td>
+                                    <td>Image</td>
+                                    <td>Total Price</td>
+                                    <td>Total Amount</td>
+                                </tr>
+
+                        ";
+            foreach($data as $row){
+                echo "
+                        
+                                <tr>
+                                    <td>".$row['first_name']."</td>
+                                    <td>".$row['last_name']."</td>
+                                    <td>".$row['user_email']."</td>
+                                    <td><p style='background-color:green; padding:7px; color:white;'>".$row['order_status']."</p></td>
+                                    <td>".$row['created_at']."</td>
+                                    <td>".$row['product_name']."</td>
+                                    <td>".$row['quantity']."</td>
+                                    <td>".$row['product_price']."</td>
+                                    <td>".$row['category']."</td>
+                                    <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
+                                    <td>".$row['total_price']."</td>
+                                    <td>".$row['total_amount']."</td>
+                                    <td> 
+                                        <form action='../merchant/orders-merch.php' method='post'>
+                                            <input type='hidden' name='order_id' value='".$row["order_id"].">
+                                            <input type='submit' name='approve' value='Approve' />
+                                            <button type='submit' name='approve' style='background-color:green; color:while; width: 50px;'>Approve</button>
+                                            
+                                        </form>
                                         
-                                    </form>
-                                       
 
-                                         
-                                </td>
-                            </tr>
-                            
-      
-                                ";
-       }
-        echo "  
-    
-        </table>
-        </div>
-        </div>
-        </div>"; 
+                                            
+                                    </td>
+                                </tr>
+                                
+        
+                                    ";
+        }
+            echo "  
+        
+            </table>
+            </div>
+            </div>
+            </div>"; 
+        }
 
     }
 

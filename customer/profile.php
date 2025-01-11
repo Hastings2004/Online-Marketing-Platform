@@ -156,6 +156,8 @@ include '../classes/change-contr.class.php'
 							$initials = $_POST['initial'];
 							$gender = $_POST['gender'];
 							$title = $_POST['title'];
+							$discrict = $_POST['district'];
+							$village = $_POST['village'];
 							$nationality = $_POST['nationality'];
 							$national_id = $_POST['national-id'];
 							$passport = $_POST['passport'];
@@ -163,7 +165,7 @@ include '../classes/change-contr.class.php'
 							$marital_status = $_POST['marital-status'];
 
 							$profile = new Profile();
-							$profile -> update_profile($_SESSION['user_id'],$initials,$gender,$nationality,$marital_status,$title,$phone,$national_id,$passport);
+							$profile -> update_profile($_SESSION['user_id'],$initials,$gender,$nationality,$discrict,$village,$marital_status,$title,$phone,$national_id,$passport);
 
 						}
 

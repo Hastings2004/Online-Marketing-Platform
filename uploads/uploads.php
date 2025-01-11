@@ -195,7 +195,7 @@ include "../classes/products.class.php";
                         
 
 				}
-				/*if(isset($_POST["receipt"])){
+				/*f(isset($_POST["receipt"])){
 					$payment_amount = $_POST["payment-amount"];
 					$payment_date = $_POST["payment-date"];
 
@@ -250,8 +250,8 @@ include "../classes/products.class.php";
 
                         } 
                         
-				
-*/
+				*/
+
 
                     if(isset($_POST['add-product'])){
                         $product_name = $_POST['product-name'];

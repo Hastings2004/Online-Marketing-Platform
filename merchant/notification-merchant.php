@@ -3,6 +3,7 @@ session_start();
 include '../database/database.php';
 include '../classes/notification.class.php';
 include '../classes/oders.class.php';
+include '../classes/search.class.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -90,10 +91,10 @@ include '../classes/oders.class.php';
 		<nav>
 			<i class='bx bx-menu' ></i>
 			<a href="#" class="nav-link">Categories</a>
-			<form action="#">
+			<form action="notification-merchant.php" method="get">
 				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' >S</i></button>
+					<input type="text" placeholder="Search notifications ..." name="search" id="search-field">
+					<button type="submit" class="search-btn" name="search-btn"><i class='bx bx-search' >S</i></button>
 				</div>
 			</form>
 			<input type="checkbox" id="switch-mode" hidden>
@@ -186,6 +187,16 @@ include '../classes/oders.class.php';
 			
 
 			<div class="table-data">
+				<?php
+			     	if(isset($_GET['search-btn'])){
+						
+						$search = $_GET['search'];
+
+						$result = new Searching();
+						
+						$result -> search_notification($search);		  
+					}
+			?>
 				<li>
 					<div class="notification">
 						<form action="notification-merchant.php" method="post">
