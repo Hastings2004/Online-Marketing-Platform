@@ -160,6 +160,22 @@ include '../classes/change-contr.class.php';
 							$update -> changePassword(); 
 
 						}
+						if(isset($_POST['save']) ){
+							$initials = $_POST['initial'];
+							$gender = $_POST['gender'];
+							$title = $_POST['title'];
+							$discrict = $_POST['district'];
+							$village = $_POST['village'];
+							$nationality = $_POST['nationality'];
+							$national_id = $_POST['national-id'];
+							$passport = $_POST['passport'];
+							$phone = $_POST['phone'];
+							$marital_status = $_POST['marital-status'];
+
+							$profile = new Profile();
+							$profile -> update_profile($_SESSION['user_id'],$initials,$gender,$nationality,$discrict,$village,$marital_status,$title,$phone,$national_id,$passport);
+
+						}
 
 						$profile = new Profile();
 						$profile -> add_profile($_SESSION['user_id']);

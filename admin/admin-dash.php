@@ -101,9 +101,9 @@ include '../classes/oders.class.php';
 		<nav>
 			<i class='bx bx-menu'></i>
 			<a href="#" class="nav-link">Categories</a>
-			<form action="admin-dash.php" method="post">
+			<form action="admin-dash.php" method="get">
 				<div class="form-input">
-					<input type="text" placeholder="Search..." name="search">
+					<input type="text" placeholder="Search..." name="search" id="search-field">
 					<button type="submit" class="search-btn" name="search-btn"><i class='bx bx-search' ></i></button>
 				</div>
 			</form>
@@ -174,19 +174,18 @@ include '../classes/oders.class.php';
 					</span>
 				</li>
 			</ul>
+			<div id="details">
 			<?php
-			      $mechants = new Users();
-				  $mechants -> get_merchants();
-				  
-			      if(isset($_POST['search-btn'])){
-					$search = $_POST['search'];
+			     	if(isset($_GET['search-btn'])){
+						
+						$search = $_GET['search'];
 
-					$result = new Searching();
-					
-					$result -> search_all($search);
-				  }
-			
+						$result = new Searching();
+						
+						$result -> search_all($search);		  
+					}
 			?>
+			</div>
 
 
 
