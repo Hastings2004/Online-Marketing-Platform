@@ -73,7 +73,7 @@ class ShoppingCart extends Database{
                                 <td>Price</td>
                                 <td>Product</td>
                                 <td>
-                                    <form action='../customer/order.php' method='post'>
+                                    <form action='order.php' method='post'>
                                         <button type='submit' name='place-order' style='background-color:green; color:while; width: 80px;'>Place order</button>
                                         
                                     </form>
