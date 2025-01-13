@@ -16,7 +16,7 @@ include "../classes/oders.class.php";
 	<!-- My CSS -->
 	<link rel="stylesheet" href="../css/style.css">
 
-	<title>Merchant Orders</title>
+	<title>Merchant</title>
 </head>
 <body>
 
