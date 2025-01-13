@@ -96,7 +96,7 @@ class ShoppingCart extends Database{
                                 <td>".$row['product_price']."</td>
                                 <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
                                 <td> 
-                                    <form action='../customer/order.php' method='post'>
+                                    <form action='order.php' method='post'>
                                          <input type='hidden' name='product_id' value='".$row['product_id']."'> 
                                         <button type='submit' name='delete' style='background-color:red; color:while; width: 50px;'>remove</button>
                                         
@@ -104,7 +104,7 @@ class ShoppingCart extends Database{
                                 
                                 </td>
                             </tr>
-                          <hr />
+                          
                         
                    ";
 
