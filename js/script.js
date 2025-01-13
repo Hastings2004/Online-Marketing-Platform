@@ -88,7 +88,7 @@ function getData() {
 	let name = searchField.value;
 	
 	
-	xhr.open("GET", "../admin/admin-dash.php", true);
+	xhr.open("GET", "../customer/home.php", true);
 
 	xhr.onload = () =>{
 		if(xhr.status === 200) {
