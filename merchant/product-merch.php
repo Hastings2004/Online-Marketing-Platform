@@ -218,37 +218,7 @@
 					</form>
 					
 				</div>
-				<div class="todo">
-					<div class="head">
-						<h3>Delete Products</h3>
-						<i class='bx bx-search' ></i>
-						<i class='bx bx-filter' ></i>
-					</div>
-
-					<form action="" method="post">
-						<table >
-							
-								<tr>
-									<td><span class="text">Product Name</span></td>
-									<td> <input type="text" name="product-name" id="product-name" class="input" ></td>
-								</tr>
-								<tr>
-									<td><span class="text">Product Description</span></td>
-									<td> <input type="text" name="descr" class="input" ></td>
-								</tr>
-								<tr>
-									<td><span>Price</span></td>
-									<td> <input type="number" class="input" name="Price"></td>
-								</tr>
-								<tr>
-									<td></td>
-									<td><button type="submit">Delete products</button> </td>
-								</tr>
-							
-						</table>
-					</form>
-					
-				</div>
+				
 				
 			</div>
 			<div class="table-data">
@@ -294,63 +264,12 @@
 								</tr>
 							</table>
 						</form>
-						<?php
-						/*
-							if(isset($_POST['update'])){
-								$product_name = $_POST['product-name'];
-								$product_price = $_POST['product-price'];
-								$description = $_POST['description'];
-								$category = $_POST['category'];
-								
 						
-								
-								$product = new Products();
-
-								$product -> update_product($product_name,$description, $product_price,$category,$image_url);
-							}*/
-						?>
 					</div>
 				
 				
 				</div>
-				<div class="todo">
-					<div class="head">
-						<h3>View Products</h3>
-						<i class='bx bx-search' ></i>
-						<i class='bx bx-filter' ></i>
-					</div>
-
-					<form action="" method="post" enctype="multipart/form-data">
-						<table >
 							
-								<tr>
-									<td><span class="text">Product Name</span></td>
-									<td> <input type="text" name="product-name" id="product-name" class="input" ></td>
-								</tr>
-								<tr>
-									<td><span class="text">Product Description</span></td>
-									<td> <input type="text" name="description" class="input"></td>
-								</tr>
-								<tr>
-									<td><span>Category</span> </td>
-									<td><input type="text" class="input" name="category"></td>
-								</tr>
-								<tr>
-									<td><span>Price</span></td>
-									<td> <input type="number" class="input" name="Price"></td>
-								</tr>
-
-								<tr>
-									<td></td>
-									<td><button type="submit">View products</button> </td>
-								</tr>
-							
-						</table>
-											 
-					</form>
-
-					
-				</div>				
 
 			</div>
 			

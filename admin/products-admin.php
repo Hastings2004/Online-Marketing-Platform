@@ -143,29 +143,15 @@ session_start();
 				</a>
 			</div>
 
-			<ul class="box-info">
-				<li>
-					<i class='bx bxs-group' ></i>
-					<span class="text">
-						<h3>20</h3>
-						<p>Products</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-dollar-circle' ></i>
-					<span class="text">
-						<h3>$2543</h3>
-						<p>Total Sales</p>
-					</span>
-				</li>
-			</ul>
+			
 
 
+					
 				<?php
 				    
 					 include '../classes/products.class.php';
 				     $products = new Products();
-					 $products -> view_product();
+					 $products -> list_of_product();
 				
 				?>
 		</main>

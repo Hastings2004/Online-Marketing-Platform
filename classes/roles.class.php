@@ -63,8 +63,8 @@ class Roles extends Database{
 
         $users = $stmt ->fetchAll(PDO::FETCH_ASSOC);
 
-        $stmt = $this -> connect() -> prepare("SELECT * FROM roles WHERE role_id = ? OR role_name = ?");
-        if(!$stmt -> execute(array($role_id, $role_name))) {
+        $stmt = $this -> connect() -> prepare("SELECT * FROM roles WHERE  role_name = ?");
+        if(!$stmt -> execute(array( $role_name))) {
             $stmt = null;
             echo "Error executing statement";
             exit();
@@ -146,7 +146,7 @@ class Roles extends Database{
                             ";
        }
 
-
+        exit();
 
     }
 }

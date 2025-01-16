@@ -85,8 +85,8 @@ public function user_notification( $user_id){
     }
 
     if($stmt->rowCount() == 0){
-        echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px;'> You dont have any Notification</p>";
-        exit();
+        echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px;'> You dont have any new Notification</p>";
+      
     }
 
     $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -130,5 +130,29 @@ public function get_Uread_notification(){
 
 }
 
+public function unread_notification($user_id){
+    $stmt = $this -> connect()->prepare("SELECT * FROM notifications WHERE user_id = ? ORDER BY created_time DESC");
+
+    if(!$stmt->execute(array($user_id))){
+        $stmt = null;
+        echo "error in execution";
+        exit();
+    }
+
+    if($stmt->rowCount() == 0){
+        echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px;'> You dont have any Notification</p>";
+        exit();
+    }
+
+    $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+     foreach($notifications as $notification){
+
+            echo"<p style='background-color: green; color:white; border-radius:10px; padding:10px; margin-top: 20px;'> 
+            ".$notification['message_created']."  created at ".$notification['created_time']."
+            </p>";
+
+   
+     }
+}
 }
 

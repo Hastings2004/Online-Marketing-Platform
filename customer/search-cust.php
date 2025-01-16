@@ -1,5 +1,9 @@
 <?php
 session_start();
+include '../database/database.php';
+include '../classes/notification.class.php';
+include '../classes/search.class.php';
+include '../classes/products.class.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,7 +103,7 @@ session_start();
 				<i class='bx bxs-bell' ></i>
 				<span class="num">8</span>
 			</a>
-			<a href="#" class="profile">
+			<a href="profile.php" class="profile">
 				<img src="../usericon.png">
 			</a>
 		</nav>
@@ -113,7 +117,7 @@ session_start();
 					 <br>
 					<ul class="breadcrumb">
 						<li>
-							<a href="#">Dashboard</a>
+							<a href="home.php">Dashboard</a>
 						</li>
 						<li><i class='bx bx-chevron-right' ></i></li>
 						<li>
@@ -135,17 +139,16 @@ session_start();
 					</div>
 						<?php
 															
-							if(isset($_POST['search-btn'])) {
-								$search = $_POST['search'];
+							if(isset($_GET['search-btn'])){
+						
+							$search = $_GET['search'];
 
-								include "../database/database.php";
-								include "../classes/search.class.php";
-
-
-								$searching = new Searching();
-								$searching -> search_product($search);		
-
-								}
+							$result = new Searching();
+							
+							
+							$result -> search_product($search);	
+							  
+						}
 				      	?>
 				</div>	 
 			</div>

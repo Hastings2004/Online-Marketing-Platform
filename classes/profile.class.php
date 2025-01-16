@@ -145,24 +145,25 @@ class Profile extends Database{
                         </table>   
                     </form>     
                 </div>
-                <div class='todo'>
-                        <div class='head'>
+                 <div class='table-data'>
+                <div class='order'>  
+                <div class='head'>
                             <h3>Security</h3>
                         </div>
                         <div>
-                            <form action='' method='post'>
+                            <form action='profile.php' method='post'>
                                 <table>
                                     <tr>
                                         <td><span>Old password</span></td>
-                                        <td><input type='password' name='old-password' id='old-password' required></td>
+                                        <td><input type='password' name='old-password' id='old-password' requred></td>
                                     </tr>
                                     <tr>
                                         <td><span>New password</span></td>
-                                        <td><input type='password' name='new-password' id='new-password'required></td>
+                                        <td><input type='password' name='new-password' id='new-password' required></td>
                                     </tr>
                                     <tr>
                                         <td><span>Confirm password</span></td>
-                                        <td><input type='password' name='cpassword' id='cpassword'required></td>
+                                        <td><input type='password' name='cpassword' id='cpassword' requred></td>
                                     </tr>
                                     <tr>
                                         <td></td>
@@ -172,8 +173,11 @@ class Profile extends Database{
                             </form>
                      
                         </div>
-                    </div>
-					
+                       
+                                                  
+                    
+                    
+            
 				</div>
 			</div> ";
             exit();
@@ -257,12 +261,15 @@ class Profile extends Database{
                         </table> 
                      </form>      
                 </div>
-                <div class='todo'>
-                        <div class='head'>
+                
+			</div> 
+             <div class='table-data'>
+                <div class='order'>  
+                <div class='head'>
                             <h3>Security</h3>
                         </div>
                         <div>
-                            <form action='profile-admin.php' method='post'>
+                            <form action='profile.php' method='post'>
                                 <table>
                                     <tr>
                                         <td><span>Old password</span></td>
@@ -284,10 +291,7 @@ class Profile extends Database{
                             </form>
                      
                         </div>
-                    </div>
-					
-				</div>
-			</div>       
+                       
                                                   
                     
                     

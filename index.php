@@ -1,3 +1,9 @@
+<?php 
+session_start();
+//$_SESSION["login-in"] = $_POST['login'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +17,7 @@
 <body>
     <div class="container">
         <div class="head">
-        <marquee behavior="" direction="left-right"><h1>Online <br> Marketing Platform</h1></marquee>
+        <marquee behavior="" direction="left-right"><h1>Online  Marketing Platform</h1></marquee>
             
         </div>
         <div class="content">

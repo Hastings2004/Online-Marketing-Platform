@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 02, 2025 at 12:35 PM
+-- Generation Time: Jan 13, 2025 at 05:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -38,8 +38,7 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`customer_id`, `user_id`) VALUES
 (3, 1),
-(1, 2),
-(2, 4);
+(1, 2);
 
 -- --------------------------------------------------------
 
@@ -79,6 +78,12 @@ CREATE TABLE `notifications` (
 -- Dumping data for table `notifications`
 --
 
+INSERT INTO `notifications` (`notification_id`, `user_id`, `message_created`, `created_time`, `is_read`) VALUES
+(23, 3, 'You have new order from Allan', '2025-01-03', 1),
+(24, 3, 'You have new order from Allan', '2025-01-03', 1),
+(25, 3, 'AllanHas cancel the transaction', '2025-01-03', 1),
+(26, 3, 'You have new order from Allan', '2025-01-03', 1),
+(27, 3, 'You have new order from Allan', '2025-01-04', 1);
 
 -- --------------------------------------------------------
 
@@ -98,6 +103,9 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
+INSERT INTO `orders` (`order_id`, `customer_id`, `total_amount`, `order_status`, `created_at`) VALUES
+(16, 1, 2500000, 'completed', '2025-01-03'),
+(17, 1, 6000000, 'pending', '2025-01-04');
 
 -- --------------------------------------------------------
 
@@ -118,6 +126,10 @@ CREATE TABLE `order_items` (
 -- Dumping data for table `order_items`
 --
 
+INSERT INTO `order_items` (`order_item_id`, `order_id`, `product_id`, `quantity`, `product_price`, `total_price`) VALUES
+(22, 16, 13, 1, 2500000, 2500000),
+(23, 17, 14, 2, 3000000, 6000000);
+
 -- --------------------------------------------------------
 
 --
@@ -128,7 +140,8 @@ CREATE TABLE `payments` (
   `payment_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `paymemt_amount` float NOT NULL,
-  `payment_date` date NOT NULL
+  `payment_date` date NOT NULL,
+  `payment_receipt` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -151,6 +164,9 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
+INSERT INTO `products` (`product_id`, `merchant_id`, `product_name`, `product_description`, `product_price`, `category`, `image_url`) VALUES
+(13, 1, 'Iphone 12 Pro', 'New iphone smart phone with 8GB RAM and 128GB ROM', 1500000, 'electronic', 'Iphone 12 Pro.jpg'),
+(14, 1, 'Iphone 14 Pro', 'New iphone smart phone with 8GB RAM and 128GB ROM', 3000000, 'electronic', 'Iphone 14 Pro.jpg');
 
 -- --------------------------------------------------------
 
@@ -191,7 +207,11 @@ CREATE TABLE `shopping_cart` (
 -- Dumping data for table `shopping_cart`
 --
 
-
+INSERT INTO `shopping_cart` (`shopping_cart`, `customer_id`, `product_id`, `quantity_sold`, `product_price`, `is_placed`) VALUES
+(46, 1, 12, 1, 1500000, 1),
+(47, 1, 12, 3, 1500000, 1),
+(48, 1, 13, 1, 2500000, 1),
+(49, 1, 14, 2, 3000000, 1);
 
 -- --------------------------------------------------------
 
@@ -215,7 +235,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `user_email`, `username`, `user_password`) VALUES
 (1, 'Hastings', 'Chitenje', 'hastingschitenje81@gmail.com', 'Hastings2004', '$2y$10$XEeOv.F/eR0l5/nZ/rAVD.iUcXwP7t3HGYa23KnCEHmTt/yFmy71i'),
 (2, 'Allan', 'Moyo', 'moyo@gmail.com', 'Allan28', '$2y$10$hZLFWFnItsxANHzD61OSCeHpsYtHVJG6eT8tU6Ra6bRm1jXtB.fZe'),
-(3, 'Charity', 'Chunga', 'chungacharity0@gmail.com', 'charity25', '$2y$10$t7pEzKtAUJxNwS3oXotoj.kNKZzDVRkGZ0ORpwgiUcPaCq0V0oUqu'),
+(3, 'Charity', 'Chunga', 'chungacharity0@gmail.com', 'charity25', '$2y$10$t7pEzKtAUJxNwS3oXotoj.kNKZzDVRkGZ0ORpwgiUcPaCq0V0oUqu');
 
 -- --------------------------------------------------------
 
@@ -229,6 +249,8 @@ CREATE TABLE `user_profile` (
   `initial` varchar(4) NOT NULL,
   `gender` varchar(10) NOT NULL,
   `nationality` varchar(20) NOT NULL,
+  `district` varchar(255) NOT NULL,
+  `village` varchar(255) NOT NULL,
   `marital_status` varchar(10) NOT NULL,
   `title` varchar(20) NOT NULL,
   `phone_number` varchar(11) NOT NULL,
@@ -240,7 +262,8 @@ CREATE TABLE `user_profile` (
 -- Dumping data for table `user_profile`
 --
 
-
+INSERT INTO `user_profile` (`profile_id`, `user_id`, `initial`, `gender`, `nationality`, `district`, `village`, `marital_status`, `title`, `phone_number`, `national_id`, `passport`) VALUES
+(0, 3, 'CC', 'Kasungu', 'Santhe', 'Kasungu', 'Santhe', 'Single', 'Miss', '0983128580', 'NO', 'NO');
 
 -- --------------------------------------------------------
 
@@ -339,13 +362,6 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Indexes for table `user_profile`
---
-ALTER TABLE `user_profile`
-  ADD PRIMARY KEY (`profile_id`),
-  ADD UNIQUE KEY `user_id` (`user_id`);
-
---
 -- Indexes for table `user_roles`
 --
 ALTER TABLE `user_roles`
@@ -373,19 +389,19 @@ ALTER TABLE `merchants`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -397,7 +413,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -409,19 +425,13 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
-  MODIFY `shopping_cart` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `shopping_cart` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `user_profile`
---
-ALTER TABLE `user_profile`
-  MODIFY `profile_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
@@ -434,18 +444,6 @@ ALTER TABLE `user_roles`
 --
 
 --
--- Constraints for table `customers`
---
-ALTER TABLE `customers`
-  ADD CONSTRAINT `customers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
---
--- Constraints for table `merchants`
---
-ALTER TABLE `merchants`
-  ADD CONSTRAINT `merchants_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
---
 -- Constraints for table `notifications`
 --
 ALTER TABLE `notifications`
@@ -456,31 +454,6 @@ ALTER TABLE `notifications`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`);
-
---
--- Constraints for table `payments`
---
-ALTER TABLE `payments`
-  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
-
---
--- Constraints for table `shopping_cart`
---
-ALTER TABLE `shopping_cart`
-  ADD CONSTRAINT `shopping_cart_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`);
-
---
--- Constraints for table `user_profile`
---
-ALTER TABLE `user_profile`
-  ADD CONSTRAINT `user_profile_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
---
--- Constraints for table `user_roles`
---
-ALTER TABLE `user_roles`
-  ADD CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -39,7 +39,7 @@ class Users extends Database{
 						<i class='bx bx-filter'></i>
 					</div>
                     <div>
-                        <table>
+                        <table border=1>
                             <tr>
                                 <td>First Name</td>
                                 <td>Last Name</td>

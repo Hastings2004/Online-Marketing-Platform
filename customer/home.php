@@ -147,16 +147,15 @@ include '../classes/products.class.php';
 
 						$result = new Searching();
 						
-						$result -> search_product($search);		  
+						$result -> search_user($search);
+						$result -> search_product($search);	
+							  
 					}
-				    
 					
 				     $products = new Products();
 					 $products -> view_product();
 				
 				?>
-
-
 			</div>
 				
 		</main>

@@ -113,6 +113,7 @@ include '../classes/oders.class.php';
 				<i class='bx bxs-bell' ></i>
 				<span class="num">
 					<?php
+						
 						$unread = new Notifications();
 						$unread -> get_Uread_notification();
 					
@@ -180,9 +181,14 @@ include '../classes/oders.class.php';
 						$search = $_GET['search'];
 
 						$result = new Searching();
-						
-						$result -> search_all($search);		  
+
+						$result -> search_user($search);
+						$result -> search_product($search);	
+							  
 					}
+
+					$users = new Users();
+					$users -> get_all_users();
 			?>
 			</div>
 

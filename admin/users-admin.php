@@ -157,8 +157,8 @@ include '../classes/users.class.php';
 						
 						?></h3>
 						<p>Users</p>
-						<form action="" method="post">
-							<button type="submit" style="padding: 5px;">view</button>
+						<form action="users-admin.php" method="post">
+							<button type="submit" name="user" style="padding: 5px;">view</button>
 						</form>
 					</span>
 				</li>
@@ -176,7 +176,24 @@ include '../classes/users.class.php';
 				
 			</ul>
 			
+			<?php
+					if(isset($_POST['view-role'])) {
+								$role = new Roles();
+								$role -> view_roles();
+					}
+						
+			      if(isset($_POST['search-btn'])){
+					$search = $_POST['search'];
 
+					$result = new Searching();
+					$result -> search_user($search);
+				  }
+				  if(isset($_POST['user'])){
+					$users = new Users();
+					$users -> get_all_users();
+				  }
+			
+			 ?>
 
 			<div class="table-data">
 				<div class="order">  						 
@@ -277,21 +294,7 @@ include '../classes/users.class.php';
 					</div>				
 				</div>
 			</div>
-			<?php
-							if(isset($_POST['view-role'])) {
-								$role = new Roles();
-								$role -> view_roles();
-							}
-						?>
-			<?php
-			      if(isset($_POST['search-btn'])){
-					$search = $_POST['search'];
-
-					$result = new Searching();
-					$result -> search_user($search);
-				  }
 			
-			?>
 		</main>
 		<!-- MAIN -->
 	</section>

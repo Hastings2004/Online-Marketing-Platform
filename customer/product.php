@@ -140,7 +140,7 @@ session_start();
 				    
 					 include '../classes/products.class.php';
 				     $products = new Products();
-					 $products -> view_product();
+					 $products -> list_of_product();
 				
 				?>
 

@@ -170,7 +170,7 @@ class Orders extends Database{
 
         $customer = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $stmt = $this -> connect() -> prepare("SELECT * FROM orders INNER JOIN order_items ON orders.order_id = order_items.order_id INNER JOIN products ON products.product_id = order_items.product_id WHERE customer_id =? ORDER BY created_at DESC LIMIT 1");
+        $stmt = $this -> connect() -> prepare("SELECT * FROM orders INNER JOIN order_items ON orders.order_id = order_items.order_id INNER JOIN products ON products.product_id = order_items.product_id WHERE customer_id =? ORDER BY orders.created_at DESC");
 
         if(!$stmt->execute(array($customer[0]['customer_id']))){
             $stmt = null;
@@ -409,164 +409,18 @@ class Orders extends Database{
     }
 
     public function get_merchant_orders($user_id){
-        $stmt = $this -> connect() -> prepare("SELECT * FROM merchants WHERE user_id =?");
-        if(!$stmt->execute(array($user_id))){
+         $stmt = $this -> connect() ->prepare("SELECT * FROM merchants WHERE user_id = ?");
+       
+         if(!$stmt -> execute(array($user_id))){
             $stmt = null;
-            echo "error in execution";
+            echo '';
             exit();
         }
-        if($stmt->rowCount() == 0){
-            echo "<p style='background-color: red; color:white; boarder-radius:10px; padding:10px;'>
-            Merchant ID not found  </p>";            
-            exit();
-
-        }
-
-        $merchant = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-
-      
-        $stmt = $this -> connect() -> prepare("SELECT * FROM users INNER JOIN customers ON users.user_id = customers.user_id 
-        INNER JOIN orders ON customers.customer_id = orders.customer_id 
-        INNER JOIN order_items ON orders.order_id = order_items.order_id 
-        INNER JOIN products ON order_items.product_id = products.product_id WHERE merchant_id = ?");
-
-        if(!$stmt->execute(array($merchant[0]["merchant_id"]))){
-            $stmt = null;
-            echo "error in execution";
-            exit();
-        }
-        if($stmt->rowCount() == 0){
-            echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px; margin-top: 20px; border-radius: 10px;'>
-            You dont have  any order placed</p>";            
-            exit();
-
-        }
-        $data = $stmt ->fetchAll(PDO::FETCH_ASSOC);
-
-        if($data[0]['order_status'] == "completed"){
-            echo "<div class='table-data' style='color:green;'>
-                    <div class='order'>  						 
-                        <div class='head'>
-                            <h3>Order present</h3>
-                            <i class='bx bx-search'></i>
-                            <i class='bx bx-filter'></i>
-                        </div>
-                        <div>
-                        
-                            <table border=1>
-                                <tr>
-                                    <td>first name</td>
-                                    <td>last name</td>
-                                    <td>Email</td>
-                                    <td>Order Status</td>
-                                    <td>Order Date</td>
-                                    <td>Product Name</td>
-                                    <td>Quantity</td>
-                                    <td>Price</td>
-                                    <td>Category</td>
-                                    <td>Image</td>
-                                    <td>Total Price</td>
-                                    <td>Total Amount</td>
-                                </tr>
-
-                        ";
-            foreach($data as $row){
-                echo "
-                        
-                                <tr>
-                                    <td>".$row['first_name']."</td>
-                                    <td>".$row['last_name']."</td>
-                                    <td>".$row['user_email']."</td>
-                                    <td><p style='background-color:green; padding:7px; color:white;'>".$row['order_status']."</p></td>
-                                    <td>".$row['created_at']."</td>
-                                    <td>".$row['product_name']."</td>
-                                    <td>".$row['quantity']."</td>
-                                    <td>".$row['product_price']."</td>
-                                    <td>".$row['category']."</td>
-                                    <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
-                                    <td>".$row['total_price']."</td>
-                                    <td>".$row['total_amount']."</td>
-                                    
-                                </tr>
-                                
-        
-                                    ";
-        }
-            echo "  
-        
-            </table>
-            </div>
-            </div>
-            </div>"; 
-
-        }
-        else{
-            echo "<div class='table-data' style='color:green;'>
-                    <div class='order'>  						 
-                        <div class='head'>
-                            <h3>Order present</h3>
-                            <i class='bx bx-search'></i>
-                            <i class='bx bx-filter'></i>
-                        </div>
-                        <div>
-                        
-                            <table border=1>
-                                <tr>
-                                    <td>first name</td>
-                                    <td>last name</td>
-                                    <td>Email</td>
-                                    <td>Order Status</td>
-                                    <td>Order Date</td>
-                                    <td>Product Name</td>
-                                    <td>Quantity</td>
-                                    <td>Price</td>
-                                    <td>Category</td>
-                                    <td>Image</td>
-                                    <td>Total Price</td>
-                                    <td>Total Amount</td>
-                                </tr>
-
-                        ";
-            foreach($data as $row){
-                echo "
-                        
-                                <tr>
-                                    <td>".$row['first_name']."</td>
-                                    <td>".$row['last_name']."</td>
-                                    <td>".$row['user_email']."</td>
-                                    <td><p style='background-color:green; padding:7px; color:white;'>".$row['order_status']."</p></td>
-                                    <td>".$row['created_at']."</td>
-                                    <td>".$row['product_name']."</td>
-                                    <td>".$row['quantity']."</td>
-                                    <td>".$row['product_price']."</td>
-                                    <td>".$row['category']."</td>
-                                    <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
-                                    <td>".$row['total_price']."</td>
-                                    <td>".$row['total_amount']."</td>
-                                    <td> 
-                                        <form action='../merchant/orders-merch.php' method='post'>
-                                            <input type='hidden' name='order_id' value='".$row["order_id"].">
-                                            <input type='submit' name='approve' value='Approve' />
-                                            <button type='submit' name='approve' style='background-color:green; color:while; width: 50px;'>Approve</button>
-                                            
-                                        </form>
-                                        
-
-                                            
-                                    </td>
-                                </tr>
-                                
-        
-                                    ";
-        }
-            echo "  
-        
-            </table>
-            </div>
-            </div>
-            </div>"; 
-        }
-
+        $merchant = $stmt->fetchAll(PDO::FETCH_ASSOC);
+       
+        $this -> merchant_orders($merchant[0]['merchant_id'], "pending");
+             
+        $this -> merchant_orders($merchant[0]['merchant_id'], "completed");
     }
 
     public function view(){
@@ -781,6 +635,160 @@ class Orders extends Database{
             echo "error occur";
             exit();
         }
+    }
+
+    public function merchant_orders($merchant_id, $order_status){
+       
+      
+        $stmt = $this -> connect() -> prepare("SELECT * FROM users 
+        INNER JOIN customers ON users.user_id = customers.user_id 
+        INNER JOIN orders ON customers.customer_id = orders.customer_id 
+        INNER JOIN order_items ON orders.order_id = order_items.order_id 
+        INNER JOIN products ON order_items.product_id = products.product_id 
+        WHERE products.merchant_id = ? AND orders.order_status = ? ORDER BY orders.created_at DESC;");
+
+        if(!$stmt->execute(array($merchant_id, $order_status))){
+            $stmt = null;
+            echo "error in execution";
+            exit();
+        }
+        if($stmt->rowCount() == 0){
+            echo "<p style='background-color: green; color:white; border-radius:10px; padding:10px; margin-top: 20px; border-radius: 10px;'>
+            You dont have  any order placed</p>";            
+            exit();
+
+        }
+        $data = $stmt ->fetchAll(PDO::FETCH_ASSOC);
+
+        if($data[0]['order_status']  == "completed"){    
+            echo "<div class='table-data' style='color:green;'>
+                    <div class='order'>  						 
+                        <div class='head'>
+                            <h3>".$order_status." Orders</h3>
+                            <i class='bx bx-search'></i>
+                            <i class='bx bx-filter'></i>
+                        </div>
+                        <div>
+                        
+                            <table border=1>
+                                <tr>
+                                    <td>first name</td>
+                                    <td>last name</td>
+                                    <td>Email</td>
+                                    <td>Order Status</td>
+                                    <td>Order Date</td>
+                                    <td>Product Name</td>
+                                    <td>Quantity</td>
+                                    <td>Price</td>
+                                    <td>Category</td>
+                                    <td>Image</td>
+                                    <td>Total Price</td>
+                                    <td>Total Amount</td>
+                                </tr>
+
+                        ";
+            foreach($data as $row){
+                echo "
+                        
+                                <tr>
+                                    
+                                    <td>".$row['first_name']."</td>
+                                    <td>".$row['last_name']."</td>
+                                    <td>".$row['user_email']."</td>
+                                    <td><p style='background-color:green; padding:7px; color:white;'>".$row['order_status']."</p></td>
+                                    <td>".$row['created_at']."</td>
+                                    <td>".$row['product_name']."</td>
+                                    <td>".$row['quantity']."</td>
+                                    <td>".$row['product_price']."</td>
+                                    <td>".$row['category']."</td>
+                                    <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
+                                    <td>".$row['total_price']."</td>
+                                    <td>".$row['total_amount']."</td>
+                                    
+                                </tr>
+                                
+        
+                                    ";
+        }
+            echo "  
+        
+            </table>
+            </div>
+            </div>
+            </div>"; 
+
+        }
+        
+        else{
+            echo "<div class='table-data' style='color:green;'>
+                    <div class='order'>  						 
+                        <div class='head'>
+                            <h3>Recent present</h3>
+                            <i class='bx bx-search'></i>
+                            <i class='bx bx-filter'></i>
+                        </div>
+                        <div>
+                        
+                            <table border=1>
+                                <tr>
+                                <td>Order ID</td>
+                                    <td>first name</td>
+                                    <td>last name</td>
+                                    <td>Email</td>
+                                    <td>Order Status</td>
+                                    <td>Order Date</td>
+                                    <td>Product Name</td>
+                                    <td>Quantity</td>
+                                    <td>Price</td>
+                                    <td>Category</td>
+                                    <td>Image</td>
+                                    <td>Total Price</td>
+                                    <td>Total Amount</td>
+                                </tr>
+
+                        ";
+            foreach($data as $row){
+                echo "
+                        
+                                <tr> 
+                                    <td>".$row['order_id']."</td>
+                                    <td>".$row['first_name']."</td>
+                                    <td>".$row['last_name']."</td>
+                                    <td>".$row['user_email']."</td>
+                                    <td><p style='background-color:green; padding:7px; color:white;'>".$row['order_status']."</p></td>
+                                    <td>".$row['created_at']."</td>
+                                    <td>".$row['product_name']."</td>
+                                    <td>".$row['quantity']."</td>
+                                    <td>".$row['product_price']."</td>
+                                    <td>".$row['category']."</td>
+                                    <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
+                                    <td>".$row['total_price']."</td>
+                                    <td>".$row['total_amount']."</td>
+                                    <td> 
+                                        <form action='../merchant/orders-merch.php' method='post'>
+                                            <input type='hidden' name='order_id' value='".$row["order_id"].">
+                                            <input type='submit' name='approve' value='Approve' />
+                                            <button type='submit' name='approve' style='background-color:green; color:while; width: 50px;'>Approve</button>
+                                            
+                                        </form>
+                                        
+
+                                            
+                                    </td>
+                                </tr>
+                                
+        
+                                    ";
+        }
+            echo "  
+        
+            </table>
+            </div>
+            </div>
+            </div>"; 
+        }
+        
+        
     }
     
 

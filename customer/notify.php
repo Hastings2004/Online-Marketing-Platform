@@ -149,11 +149,26 @@
 					
 					?>
 				</li>
+				<li>
+					<i class='bx bxs-calendar-check' ></i>
+					<span class="text">
+						<h3>Your previous notifications</h3>
+						<form action="notify.php" method="post">
+							<button type="submit" name="view-product" style="width: 80px;">View</button>
+						</form>
+					</span>
+					
+				</li>
 				
 			</ul>
 
 			<div class="table-data">
-				
+				<?php
+					if(isset($_POST['view-product'])){
+						$notification = new Notifications();
+						$notification -> unread_notification($_SESSION['user_id']);
+					}
+				?>
 				
 
 				

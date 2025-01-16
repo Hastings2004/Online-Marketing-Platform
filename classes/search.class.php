@@ -6,7 +6,7 @@
 
     public function search_product($search){
         $stmt = $this -> connect()->prepare("SELECT * FROM products  WHERE 
-         product_name LIKE '%$search%' OR product_description LIKE '%$search%' OR category LIKE '%$search%'");
+         product_name LIKE '%$search%' OR product_description LIKE '%$search%' OR category LIKE '%$search%' OR merchant_id LIKE '%$search%'");
 
         $stmt->execute();
          
@@ -50,7 +50,7 @@
                                 </td>
 
                                 <td> Price: K".$product['product_price']."</td>
-                                 <td> <input type='number' min='1' name='quantity' required style=' width: 50px; padding: left 7px;'> 
+                                 <td> <input type='number' min='1' value='1' name='quantity' required style=' width: 50px; padding: left 7px;'> 
                                 <input type='hidden' name='product_id' value='".$product['product_id']."'> 
                                 <input type='hidden' name='product_price' value='".$product['product_price']."'>
                                 </td>
@@ -95,7 +95,7 @@
 						<i class='bx bx-filter'></i>
 					</div>
                     <div>
-                        <table>
+                        <table border=1>
                             <tr>
                                 <td>First Name</td>
                                 <td>Last Name</td>
@@ -116,6 +116,7 @@
                         
                    ";
         }
+        exit();
     }
 
     public function search_order($search){
@@ -191,6 +192,7 @@
             </div>"; 
 
         }
+        exit();
     }
 
     public function search_all($search){
@@ -358,6 +360,8 @@
                                                   
             ";
               }
+               exit();
     }
+   
 
 }

@@ -4,6 +4,7 @@ class ShoppingCart extends Database{
     public function add_cart($user_id, $product_id, $quantity, $price){
 
         $stmt = $this -> connect() ->prepare("SELECT * FROM customers WHERE user_id = ?");
+        
         if(!$stmt->execute(array($user_id))){
             $stmt = null;
             echo"error in execute statement";
@@ -15,10 +16,14 @@ class ShoppingCart extends Database{
             exit();
        
         }
-
+        
         $customer = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
+        if($this -> get_number_cart($customer[0]['customer_id']) == false){
+            echo "<p style='background-color: white; color:green; boarder-radius:10px; padding:10px;'>You have reached maximum number of items in your shopping cart please place an order <a href='shopping-cart.php' style='color: blue;'>go</a>!!</p>";
+            exit();
+        };
+        
         $stmt = $this -> connect() -> prepare("INSERT INTO shopping_cart (customer_id, product_id, quantity_sold, product_price) VALUES(?,?,?,?)");
 
         if(!$stmt->execute(array($customer[0]['customer_id'], $product_id, $quantity, $price))){
@@ -104,7 +109,7 @@ class ShoppingCart extends Database{
                                 
                                 </td>
                             </tr>
-                          
+                          <hr />
                         
                    ";
 
@@ -135,6 +140,29 @@ class ShoppingCart extends Database{
         }
         echo "<p style='background-color: green; color:white; boarder-radius:10px; padding:10px;'>Successfully removed!!</p>";
            
+    }
+    public function get_number_cart($customer_id){
+
+        $stmt = $this -> connect()->prepare("SELECT COUNT(*) FROM shopping_cart WHERE customer_id = ?  AND is_placed = ?");
+        if(!$stmt->execute(array($customer_id,0))){
+            $stmt = null;
+            echo "error in execution";
+            exit();
+        }
+        if($stmt->rowCount() == 0){
+            echo "0";
+            exit();
+        }
+        $carts = $stmt->fetchColumn();
+    
+        
+        if($carts == 10){
+            return false;
+        }
+        else{
+            return true;
+        }
+    
     }
 
     
