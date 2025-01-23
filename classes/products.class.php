@@ -141,6 +141,7 @@ class Products extends Database{
     }
      public function list_of_product(){
         $this -> list_category("clothes");
+        echo "<p style='margin-top: 20px;'></p>";
         $this -> list_category("electronic");
         //$this -> list_category("food");
     }
@@ -211,7 +212,7 @@ class Products extends Database{
         </div>";
 
     }
-    private function list_category($category){
+    public function list_category($category){
         $stmt = $this->connect()->prepare("SELECT * FROM products  WHERE category = ?  ORDER BY product_id DESC ");
         if(!$stmt -> execute(array($category))){
             $stmt = null;
@@ -226,49 +227,45 @@ class Products extends Database{
 
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        echo "<div class='table-data'>
+        echo "<div style='background-color:white; margin:20px; padding: 20px; color:green;'>
                 <div class='order'>  						 
 					<div class='head'>
-						<h3>Products  under category of ".$category."</h3>
+						<h2>Products  under category of ".$category."</h2>
 						<i class='bx bx-search'></i>
 						<i class='bx bx-filter'></i>
 				    </div>
                     
-                    <ul>
-                    
+                                   
                        
+	                <div style='display:flex; flex-wrap: wrap;'>
                     ";
         
         foreach($products as $product){
 
             echo "
            
-            <li style='width: 500px; height: fit-content; padding: 10px;'>
+            <div style='width: 242px;; height: fit-content; padding: 10px; border:2px solid green; text-align:center; margin: 20px; border-radius:10px;'>
              <h3>".$product['product_name']."</h3>
-                            <form action='../customer/shopping-cart.php' method='post'>
-                            
-                            
-                                
-                                
-                                <img src='../uploads/upload/". $product['image_url'] ."' alt='' style='width: 100px;'> <br>
+                    <form action='../customer/shopping-cart.php' method='post'>                              
+                        <img src='../uploads/upload/". $product['image_url'] ."' alt='' style='width: 150px;'> <br>
 
-                                Price: K".$product['product_price']." <br>
-                                Quantity: <input type='number' min='1' name='quantity' value='1' required style=' width: 50px; padding: left 7px;'> <br>
-                                <input type='hidden' name='product_id' value='".$product['product_id']."'> 
-                                <input type='hidden' name='product_price' value='".$product['product_price']."'>
-                                Description: ".$product['product_description']." <br>
-                                <button type='submit' name='cart' style='background-color:green; color:while; width: 50px;'>Add</button>
-                                   
+                        <p style='margin-top:10px; margin-bottom:10px;'> Price: K".$product['product_price']." <br>
+                        <p style='margin-top:10px; margin-bottom:10px;'>Quantity: <input type='number' min='1' name='quantity' value='1' required style=' width: 50px; padding: left 7px; border:2px solid green; padding:5px; border-radius:8px;'> <br>
+                        <input type='hidden' name='product_id' value='".$product['product_id']."'> 
+                        <input type='hidden' name='product_price' value='".$product['product_price']."'>
+                        <p style='margin-top:10px; margin-bottom:10px;'>Description: ".$product['product_description']." <br>
+                        <button type='submit' name='cart' style='padding: 5px;border-radius: 10px;color:white; background-color:green; color:while; width: 80px; height: 30px; margin: 20px;'>Add</button>                       
                              
                                
-                                                            
-                            </form> 
-                       </li>                           
+                    </form> 
+            </div>  
+                                    
             ";
         }
          echo "  
         
-        </ul>
+        </div>
+       
         </div>
         </div>";
 
@@ -356,9 +353,17 @@ class Products extends Database{
 
     }
     public function get_number_product(){
+        $stmt = $this -> connect() -> prepare("SELECT * FROM merchants WHERE user_id = ?");
 
-        $stmt = $this -> connect()->prepare("SELECT COUNT(*) FROM products");
-        if(!$stmt->execute()){
+        if(!$stmt -> execute(array($_SESSION['user_id']))){
+            $stmt = null;
+            echo "error";
+            exit();
+        }
+        $user = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt = $this -> connect()->prepare("SELECT COUNT(*) FROM products WHERE merchant_id =?");
+        if(!$stmt->execute(array($user[0]['merchant_id']))){
             $stmt = null;
             echo "error in execution";
             exit();

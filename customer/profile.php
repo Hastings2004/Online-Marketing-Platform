@@ -4,7 +4,11 @@ include '../database/database.php';
 include '../classes/notification.class.php';
 include '../classes/profile.class.php';
 include '../classes/change.class.php';
-include '../classes/change-contr.class.php'
+include '../classes/change-contr.class.php';
+
+if(!isset($_SESSION['user_id'])) {
+	header('location:../index.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

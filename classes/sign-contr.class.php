@@ -7,24 +7,29 @@ class Sign_contr extends Signup_Validation{
     private $password;
     private $username;
     private $cpassword;
+    private $user_type;
 
-    public function __construct($firstName, $lastName, $email, $username, $password, $cpassword){
+    public function __construct($firstName, $lastName, $email, $username, $password, $cpassword, $user_type){
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
         $this->username = $username;
         $this->password = $password;
         $this->cpassword = $cpassword;
+        $this->user_type = $user_type;
     }
 
     public function set_user(){
-        $this -> isvalidation($this->firstName, $this->lastName, $this->email,$this->username ,$this->password, $this->cpassword);
+        $this -> isvalidation($this->firstName, $this->lastName, $this->email,$this->username ,$this->password, $this->cpassword, $this->user_type);
+    }
+    public function set_user_type(){
+        $this -> user_type( $this->email,$this->user_type,$this->username);
     }
     public function get_user(){
         $this -> validUser($this->email, $this->username, $this->password);
     }
     
-    protected function isvalidation($firstName, $lastName, $email, $username, $password, $cpassword){
+    protected function isvalidation($firstName, $lastName, $email, $username, $password, $cpassword, $user_type){
         if($this -> validateName($firstName, $lastName) == false){
             echo "Please enter use letter only.";
             exit();
@@ -49,8 +54,9 @@ class Sign_contr extends Signup_Validation{
             echo "Email or Username already exists.";
             exit();
         }
-        $this -> insert_users($firstName, $lastName, $email, $username, $password, $cpassword);
-        echo"Successfully inserted";
+        $this -> insert_users($firstName, $lastName, $email, $username, $password, $cpassword,$user_type);
+        echo "<p style='background-color: green; color:white; boarder-radius:10px; padding:10px;'>
+            You have registere please login </p>";    
     }
 
     public function validUser($username, $password){
@@ -134,7 +140,7 @@ class Sign_contr extends Signup_Validation{
         return $result;
     }
 
-    protected function insert_users($firstName, $lastName, $email, $username, $password){
+    protected function insert_users($firstName, $lastName, $email, $username, $password, $user_type){
         $stmt = $this->connect()->prepare("INSERT INTO users (first_name,last_name,user_email,username,user_password) 
         VALUES (?,?,?,?,?)");
 

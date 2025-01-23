@@ -6,6 +6,10 @@ include "../classes/notification.class.php";
 include "../classes/profile.class.php";
 include '../classes/change.class.php';
 include '../classes/change-contr.class.php';
+
+if(!isset($_SESSION['user_id'])) {
+	header('location:../index.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,7 +101,7 @@ include '../classes/change-contr.class.php';
 			<form action="#">
 				<div class="form-input">
 					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' >S</i></button>
+					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
 				</div>
 			</form>
 			<input type="checkbox" id="switch-mode" hidden>

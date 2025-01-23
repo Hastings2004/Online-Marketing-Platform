@@ -1,9 +1,9 @@
 <?php
 
-class Signup_Validation extends Authontication{
+class Signup_Validation extends Authentication{
 
     // this function used to validate the data from the input fields
-    protected function isvalidation($firstName, $lastName, $email, $username, $password, $cpassword){
+    protected function isvalidation($firstName, $lastName, $email, $username, $password, $cpassword, $user_type){
         if($this -> validateName($firstName, $lastName) == false){
             echo "Please enter use letter only.";
             exit();
@@ -28,10 +28,14 @@ class Signup_Validation extends Authontication{
             echo "Email or Username already exists.";
             exit();
         }
-        $this -> insert_users($firstName, $lastName, $email, $username, $password, $cpassword);
+        $this -> insert_users($firstName, $lastName, $email, $username, $password, $cpassword, $user_type);
         echo "<p style='background-color: green; color:white; padding-left:30px; padding:10px; border-radius: 10px;'>
                                                         You have successfully registered</p>";
     }
+    public function user_type( $email,$user_type,$username ){
+        $this -> assign_roles($email, $user_type, $username);
+    }
+  
 
     public function validUser($username, $password){
         $this -> verify_user($username, $password);

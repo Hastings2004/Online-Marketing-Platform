@@ -1,9 +1,3 @@
-<?php 
-session_start();
-//$_SESSION["login-in"] = $_POST['login'];
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +54,7 @@ session_start();
                                 $password = $_POST["password"];
 
                                 include("database/database.php");
-                                include("classes/authntication.class.php");
+                               include("classes/authentication.class.php");
                                 include("classes/signup-validation.class.php");
                                 include("classes/users.class.php");
 

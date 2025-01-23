@@ -4,6 +4,10 @@ include '../database/database.php';
 include '../classes/notification.class.php';
 include '../classes/search.class.php';
 include '../classes/products.class.php';
+
+if(!isset($_SESSION['user_id'])) {
+	header('location:../index.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,8 +87,6 @@ include '../classes/products.class.php';
 	</section>
 	<!-- SIDEBAR -->
 
-
-
 	<!-- CONTENT -->
 	<section id="content">
 		<!-- NAVBAR -->
@@ -93,7 +95,7 @@ include '../classes/products.class.php';
 			<a href="#" class="nav-link">Categories</a>
 			<form action="search-cust.php" method="get">
 				<div class="form-input">
-					<input type="text" placeholder="Search products" name="search">
+					<input type="text" placeholder="Search products" name="search" required>
 					<button type="submit" class="search-btn" name="search-btn"><i class='bx bx-search' ></i></button>
 				</div>
 			</form>
@@ -137,6 +139,7 @@ include '../classes/products.class.php';
 					<span class="text">Download PDF</span>
 				</a>
 			</div>
+
 
 			<div>
 				<?php

@@ -219,7 +219,7 @@ class Orders extends Database{
                                 <td>".$row['created_at']."</td>
                                 
                                 <td>".$row['total_price']."</td>
-                                <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
+                                <td> <img src='../uploads/upload/". $row['image_url'] ."' alt='' style='width: 150px;'></td>
                                 
                             </tr>
       

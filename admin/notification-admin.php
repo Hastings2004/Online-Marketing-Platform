@@ -3,6 +3,10 @@ session_start();
 
 include '../database/database.php';
 include '../classes/notification.class.php';
+
+if(!isset($_SESSION['user_id'])) {
+	header('location:../index.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

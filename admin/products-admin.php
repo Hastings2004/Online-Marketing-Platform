@@ -1,5 +1,13 @@
 <?php
 session_start();
+include '../database/database.php';
+include '../classes/notification.class.php';
+include '../classes/search.class.php';
+include '../classes/products.class.php';
+
+if(!isset($_SESSION['user_id'])) {
+	header('location:../index.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,18 +95,22 @@ session_start();
 	</section>
 	<!-- SIDEBAR -->
 
-
-
 	<!-- CONTENT -->
 	<section id="content">
 		<!-- NAVBAR -->
 		<nav>
 			<i class='bx bx-menu' ></i>
-			<a href="#" class="nav-link">Categories</a>
-			<form action="#">
+			
+				<select name="category"  class="nav-link" style="border: 0px;">
+					<option value="">----Category-----</option>
+					<option value="clothes">Clothes</option>
+					<option value="electronic">Electronics</option>
+				</select>
+			
+			<form action="products-admin.php" method="get">
 				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+					<input type="text" placeholder="Search..." name="search" required>
+					<button type="submit" name="search-btn" class="search-btn">s<i class='bx bx-search' ></i></button>
 				</div>
 			</form>
 			<input type="checkbox" id="switch-mode" hidden>
@@ -107,8 +119,7 @@ session_start();
 				<i class='bx bxs-bell' ></i>
 				<span class="num">
 				<?php
-						include '../database/database.php';
-						include '../classes/notification.class.php';
+						
 						$unread = new Notifications();
 						$unread -> get_Uread_notification();
 					
@@ -148,9 +159,29 @@ session_start();
 
 					
 				<?php
+				 $products = new Products();
+				/*if(isset($_GET['category'])){
+					if($_GET['category'] == 'clothes'){
+						$products -> list_category('clothes');
+					}
+					else{
+						$products -> list_category('electronic');
+						exit();
+					}
+				}*/
+				if(isset($_GET['search-btn'])){
+						
+					$search = $_GET['search'];
+
+					$result = new Searching();
+					
+					
+					$result -> search_product($search);	
+						  
+				}
 				    
-					 include '../classes/products.class.php';
-				     $products = new Products();
+					
+				    
 					 $products -> list_of_product();
 				
 				?>

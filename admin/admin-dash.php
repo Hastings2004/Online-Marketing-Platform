@@ -5,6 +5,10 @@ include '../classes/notification.class.php';
 include '../classes/search.class.php';
 include '../classes/users.class.php';
 include '../classes/oders.class.php';
+
+if(!isset($_SESSION['user_id'])) {
+	header('location:../index.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,7 +107,7 @@ include '../classes/oders.class.php';
 			<a href="#" class="nav-link">Categories</a>
 			<form action="admin-dash.php" method="get">
 				<div class="form-input">
-					<input type="text" placeholder="Search..." name="search" id="search-field">
+					<input type="text" placeholder="Search..." name="search" id="search-field" required>
 					<button type="submit" class="search-btn" name="search-btn"><i class='bx bx-search' ></i></button>
 				</div>
 			</form>
@@ -181,9 +185,9 @@ include '../classes/oders.class.php';
 						$search = $_GET['search'];
 
 						$result = new Searching();
-
-						$result -> search_user($search);
 						$result -> search_product($search);	
+						$result -> search_user($search);
+						
 							  
 					}
 

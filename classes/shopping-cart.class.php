@@ -99,7 +99,7 @@ class ShoppingCart extends Database{
                                 <td>".$row['product_name']."</td>
                                 <td>".$row['quantity_sold']."</td>
                                 <td>".$row['product_price']."</td>
-                                <td> <img src='../uploads/upload/". $row['image_url'] ."' alt=''></td>
+                                <td> <img src='../uploads/upload/". $row['image_url'] ."' alt='' style='width: 150px;'></td>
                                 <td> 
                                     <form action='order.php' method='post'>
                                          <input type='hidden' name='product_id' value='".$row['product_id']."'> 

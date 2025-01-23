@@ -36,6 +36,13 @@
                         <span id="email-error" style="color: red;"></span>
                     </div>
                     <div class="form-details">
+                         <label for="email">User Type</label> <br>
+                        <select name="user-type" id="" class="input">
+                            <option value="customer">Customer</option>
+                            <option value="merchant">Merchant</option>
+                        </select>
+                    </div>
+                    <div class="form-details">
                        <label for="password">Password</label> <br>
                        <input type="password" name="password" id="password" class="input" placeholder="password1234"> <br>
                        <span id="password-error" style="color: red;"></span>
@@ -65,16 +72,20 @@
                             $username = $_POST['username'];
                             $password = $_POST['password'];
                             $cpassword = $_POST['cpassword'];
+                            $user_type = $_POST['user-type'];
 
 
                             include("../database/database.php");
-                            include("../classes/authntication.class.php");
+                            include("../classes/authentication.class.php");
                             include("../classes/signup-validation.class.php");
                             include("../classes/sign-contr.class.php");
 
-                            $signUp = new Sign_contr($firstname, $lastname, $email, $username, $password, $cpassword);
+                            $signUp = new Sign_contr($firstname, $lastname, $email, $username, $password, $cpassword, $user_type);
                             $signUp -> set_user();
-                            header('Location: ../user_type.php');
+
+                            $signUp -> set_user_type();
+                                
+                            //header('Location: ../user_type.php');
                         }
                         ?>
                     </div>
